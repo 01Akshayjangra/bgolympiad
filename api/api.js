@@ -1,0 +1,1 @@
+export const API_URL = `https://dev.websiteoutput.com/api/v1`

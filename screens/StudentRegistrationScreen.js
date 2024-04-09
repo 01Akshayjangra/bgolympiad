@@ -1,39 +1,68 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Alert,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { Ionicons } from "@expo/vector-icons";
+import { API_URL } from "../api/api";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
-const StudentRegistrationScreen = ({navigation}) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [gender, setGender] = useState('male');
-  const [className, setClassName] = useState('');
-  const [section, setSection] = useState('');
-  const [fatherName, setFatherName] = useState('');
-  const [motherName, setMotherName] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [state, setState] = useState('');
-  const [district, setDistrict] = useState('');
-  const [city, setCity] = useState('');
-  const [school, setSchool] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSave = () => {
-    // Handle saving data
-  };
+const StudentRegistrationScreen = ({ navigation }) => {
+  const {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    mobileNumber,
+    setMobileNumber,
+    state,
+    setState,
+    district,
+    setDistrict,
+    city,
+    setCity,
+    school,
+    setSchool,
+    fatherName,
+    setFatherName,
+    motherName,
+    setMotherName,
+    gender,
+    setGender,
+    email,
+    setEmail,
+    className,
+    setClassName,
+    section,
+    setSection,
+    handleStudentRegistration
+  } = useAuth();
 
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-      
-        <Image source={require('../assets/icon.webp')} style={styles.logoimg} />
+        <Image source={require("../assets/icon.webp")} style={styles.logoimg} />
         <Text style={styles.topBarText}>BG Olympiad</Text>
       </View>
       <View style={styles.cardContainer}>
         {/* Card 1: Back button */}
         <View style={styles.bcard}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
             <Ionicons name="arrow-back" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -41,7 +70,10 @@ const StudentRegistrationScreen = ({navigation}) => {
         {/* Card 2: Student image */}
         <View style={styles.card}>
           <View style={styles.studentImageContainer}>
-            <Image source={require('../assets/student_icon.png')} style={styles.studentIcon} />
+            <Image
+              source={require("../assets/student_icon.png")}
+              style={styles.studentIcon}
+            />
           </View>
         </View>
       </View>
@@ -52,28 +84,25 @@ const StudentRegistrationScreen = ({navigation}) => {
       </View>
       <ScrollView contentContainerStyle={styles.scontainer}>
         <View style={styles.inputContainer}>
-        
+          <View>
+            <Text style={styles.inputLabel}>First Name</Text>
+            <TextInput
+              style={[styles.input, styles.halfInput]}
+              placeholder="Enter First Name"
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+          </View>
 
-        <View>
-  <Text style={styles.inputLabel}>First Name</Text>
-  <TextInput
-    style={[styles.input, styles.halfInput]}
-    placeholder="Enter First Name"
-    value={firstName}
-    onChangeText={setFirstName}
-  />
-</View>
-
-<View>
-  <Text style={styles.inputLabel}>Last Name</Text>
-  <TextInput
-    style={[styles.input, styles.halfInput]}
-    placeholder="Enter Last Name"
-    value={lastName}
-    onChangeText={setLastName}
-  />
-</View>
-
+          <View>
+            <Text style={styles.inputLabel}>Last Name</Text>
+            <TextInput
+              style={[styles.input, styles.halfInput]}
+              placeholder="Enter Last Name"
+              value={lastName}
+              onChangeText={setLastName}
+            />
+          </View>
         </View>
         <View style={styles.radioContainer}>
           <Text style={styles.radioLabel}>Gender:</Text>
@@ -82,14 +111,13 @@ const StudentRegistrationScreen = ({navigation}) => {
             onValueChange={(itemValue) => setGender(itemValue)}
             style={styles.picker}
           >
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-            <Picker.Item label="Transgender" value="transgender" />
+            <Picker.Item label="Male" value="Male" />
+            <Picker.Item label="Female" value="Female" />
+            <Picker.Item label="Transgender" value="Transgender" />
           </Picker>
         </View>
         <Text style={styles.inputLabel}>Class</Text>
         <View style={styles.inputContainer}>
-            
           <TextInput
             style={[styles.input, styles.halfInput]}
             placeholder="Enter Class Name"
@@ -155,10 +183,10 @@ const StudentRegistrationScreen = ({navigation}) => {
           value={city}
           onChangeText={setCity}
         />
-        <Text style={styles.inputLabel}>School</Text>
+        <Text style={styles.inputLabel}>School Id</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter School"
+          placeholder="Enter School Id"
           value={school}
           onChangeText={setSchool}
         />
@@ -170,7 +198,18 @@ const StudentRegistrationScreen = ({navigation}) => {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+        <Text style={styles.inputLabel}>Confirm Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry
+        />
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={handleStudentRegistration}
+        >
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -181,17 +220,17 @@ const StudentRegistrationScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   topBar: {
-    backgroundColor: '#AA336A',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#AA336A",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 10,
-    width: '100%',
-    position: 'absolute',
+    width: "100%",
+    position: "absolute",
     top: 40,
   },
   logoimg: {
@@ -201,33 +240,33 @@ const styles = StyleSheet.create({
   },
   topBarText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
   },
   cardContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     marginTop: 100, // Adjust as needed
     paddingHorizontal: 20,
   },
   card: {
     top: 10,
-    backgroundColor: '#ffffff',
-    width: '100%',
+    backgroundColor: "#ffffff",
+    width: "100%",
     borderRadius: 10,
     padding: 5,
     marginBottom: 20,
   },
   bcard: {
     top: 10,
-    backgroundColor: '#ffffff',
-    width: '11%',
+    backgroundColor: "#ffffff",
+    width: "11%",
     borderRadius: 50,
     padding: 5,
     borderWidth: 2,
-    borderColor: '#333',
-    shadowColor: '#000',
+    borderColor: "#333",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -237,10 +276,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   backButton: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   studentImageContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   studentIcon: {
     width: 80,
@@ -248,21 +287,21 @@ const styles = StyleSheet.create({
   },
   registrationText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
   scontainer: {
     flexGrow: 1,
     padding: 20,
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
   },
   input: {
     flex: 1,
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
@@ -273,8 +312,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   radioContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   radioLabel: {
@@ -285,17 +324,16 @@ const styles = StyleSheet.create({
     height: 40,
   },
   saveButton: {
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
     padding: 10,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
   },
-
 });
 
 export default StudentRegistrationScreen;

@@ -20,7 +20,7 @@ const Getstarted = () => {
   };
 
   const handlehome = () => {
-  navigation.navigate('Main', { screen: 'Home' });
+  navigation.navigate('TabNav', { screen: 'Home' });
 };
 
 
@@ -50,8 +50,8 @@ const Getstarted = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, styles.secondButton]} onPress={handlehome}>
-        </TouchableOpacity>
+        {/* <TouchableOpacity style={[styles.button, styles.secondButton]} onPress={handlehome}>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

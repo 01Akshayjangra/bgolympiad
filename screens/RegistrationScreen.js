@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; 
-import { LinearGradient } from 'expo-linear-gradient';
-import StudentRegistrationScreen from './StudentRegistrationScreen';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import StudentRegistrationScreen from "./StudentRegistrationScreen";
+import { useAuth } from "../context/AuthContext";
 
 const RegistrationScreen = ({ navigation }) => {
-  const [selectedOption, setSelectedOption] = useState("");
+  const { selectedOption, setSelectedOption } = useAuth();
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -13,30 +21,31 @@ const RegistrationScreen = ({ navigation }) => {
 
   const handleContinue = () => {
     if (selectedOption) {
-      // Navigate to registration form based on selected option
-      console.log('Selected option:', selectedOption);
-  
       // Navigate to the respective registration screen
-      if (selectedOption === 'student') {
-        navigation.navigate('StudentRegistration', { category: selectedOption });
-      } else if (selectedOption === 'teacher') {
-        navigation.navigate('TeacherRegistration', { category: selectedOption });
-      } else if (selectedOption === 'principal') {
-        navigation.navigate('PrincipalRegistration', { category: selectedOption });
-      }  else if (selectedOption === 'other') {
-        navigation.navigate('OtherRegistration', { category: selectedOption });
-      } else if (selectedOption === 'otp') {
-        navigation.navigate('OtpScreen', { category: selectedOption });
-      }
-      else {
-        // Handle other options
+      if (selectedOption === "Student") {
+        navigation.navigate("StudentRegistration", {
+          category: selectedOption,
+        });
+      } else if (selectedOption === "Teacher") {
+        navigation.navigate("TeacherRegistration", {
+          category: selectedOption,
+        });
+      } else if (selectedOption === "Principal") {
+        navigation.navigate("PrincipalRegistration", {
+          category: selectedOption,
+        });
+      } else if (selectedOption === "User") {
+        navigation.navigate("OtherRegistration");
+      } else if (selectedOption === "otp") {
+        navigation.navigate("OtpScreen");
+      } else {
+        // Handle User options
       }
     } else {
       // Show error message, no option selected
       console.log("Please select an option");
     }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -57,12 +66,12 @@ const RegistrationScreen = ({ navigation }) => {
         <TouchableOpacity
           style={[
             styles.card,
-            selectedOption === "student" && styles.selectedCard,
+            selectedOption === "Student" && styles.selectedCard,
           ]}
-          onPress={() => handleOptionSelect("student")}
+          onPress={() => handleOptionSelect("Student")}
         >
           <View style={styles.radioButton}>
-            {selectedOption === "student" ? (
+            {selectedOption === "Student" ? (
               <Ionicons name="radio-button-on" size={24} color="blue" />
             ) : (
               <Ionicons name="radio-button-off" size={24} color="blue" />
@@ -78,12 +87,12 @@ const RegistrationScreen = ({ navigation }) => {
         <TouchableOpacity
           style={[
             styles.card,
-            selectedOption === "teacher" && styles.selectedCard,
+            selectedOption === "Teacher" && styles.selectedCard,
           ]}
-          onPress={() => handleOptionSelect("teacher")}
+          onPress={() => handleOptionSelect("Teacher")}
         >
           <View style={styles.radioButton}>
-            {selectedOption === "teacher" ? (
+            {selectedOption === "Teacher" ? (
               <Ionicons name="radio-button-on" size={24} color="blue" />
             ) : (
               <Ionicons name="radio-button-off" size={24} color="blue" />
@@ -99,12 +108,12 @@ const RegistrationScreen = ({ navigation }) => {
         <TouchableOpacity
           style={[
             styles.card,
-            selectedOption === "principal" && styles.selectedCard,
+            selectedOption === "Principal" && styles.selectedCard,
           ]}
-          onPress={() => handleOptionSelect("principal")}
+          onPress={() => handleOptionSelect("Principal")}
         >
           <View style={styles.radioButton}>
-            {selectedOption === "principal" ? (
+            {selectedOption === "Principal" ? (
               <Ionicons name="radio-button-on" size={24} color="blue" />
             ) : (
               <Ionicons name="radio-button-off" size={24} color="blue" />
@@ -117,20 +126,26 @@ const RegistrationScreen = ({ navigation }) => {
           <Text style={styles.cardText}>Register as a Principal</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.card, selectedOption === 'other' && styles.selectedCard]}
-          onPress={() => handleOptionSelect('other')}
+          style={[
+            styles.card,
+            selectedOption === "User" && styles.selectedCard,
+          ]}
+          onPress={() => handleOptionSelect("User")}
         >
           <View style={styles.radioButton}>
-            {selectedOption === 'other' ? (
+            {selectedOption === "User" ? (
               <Ionicons name="radio-button-on" size={24} color="blue" />
             ) : (
               <Ionicons name="radio-button-off" size={24} color="blue" />
             )}
           </View>
-          <Image source={require('../assets/student_icon.png')} style={styles.icon} />
+          <Image
+            source={require("../assets/student_icon.png")}
+            style={styles.icon}
+          />
           <Text style={styles.cardText}>Register Other</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.card, selectedOption === 'otp' && styles.selectedCard]}
           onPress={() => handleOptionSelect('otp')}
         >
@@ -143,7 +158,7 @@ const RegistrationScreen = ({ navigation }) => {
           </View>
           <Image source={require('../assets/student_icon.png')} style={styles.icon} />
           <Text style={styles.cardText}>otp</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
         <Text style={styles.continueButtonText}>Continue</Text>

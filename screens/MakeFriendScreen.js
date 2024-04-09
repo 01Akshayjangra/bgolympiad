@@ -1,8 +1,11 @@
-const bottombar = () => {
-    return (
+import { Text, View } from "react-native";
+
+const Bottombar = () => {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text> Make friend screen</Text>
-    );
-  };
-  
-  export default bottombar;
-  
+    </View>
+  );
+};
+
+export default Bottombar;
